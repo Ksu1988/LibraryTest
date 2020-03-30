@@ -1,0 +1,76 @@
+﻿@model MyLibrary.Models.Book
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Book</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" asp-controller="Book" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PadgesCount" class="control-label"></label>
+                <input asp-for="PadgesCount" class="form-control" />
+                <span asp-validation-for="PadgesCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PublishingYear" class="control-label"></label>
+                <input asp-for="PublishingYear" class="form-control" />
+                <span asp-validation-for="PublishingYear" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PublisherName" class="control-label"></label>
+                <input asp-for="PublisherName" class="form-control" />
+                <span asp-validation-for="PublisherName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                @if (Model.Image != null)
+                {
+                    <input type="hidden" asp-for="Image" value=@(Convert.ToBase64String(Model.Image)) />
+                    <img style='width:80px; height:90px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.Image))" />
+                }
+                <input name="formFile" type="file" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Authors" class="control-label"></label>
+                <ul>
+                    @foreach (Author author in Model.Authors)
+                    {
+                        <li>
+                            <input name="newAuthours" type="hidden" value="@author.AuthourId" />
+                            @author.Name @author.Surname
+                            <a asp-action="EditAuthors" asp-route-id="@author.AuthourId">Редактировать </a>
+                            <a asp-action="DeleteAuthour" asp-route-id="@author.AuthourId"> Удалить</a>
+                        </li>
+                    }
+                </ul>
+                <a asp-action="CreateAuthor" asp-route-id="@Model.Id">Добавить автора</a>
+                <span asp-validation-for="Authors" class="text-danger"></span>
+                @Html.ValidationMessageFor(model => model.Authors)
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

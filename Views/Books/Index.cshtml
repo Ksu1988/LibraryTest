@@ -1,0 +1,78 @@
+﻿@model IEnumerable<MyLibrary.Models.Book>
+
+@{
+    ViewData["Title"] = "Библиотека";
+}
+
+<h1>Список книг</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">
+                    @Html.DisplayNameFor(model => model.Name)
+                </a>                
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PadgesCount)
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewBag.PublishingSort">
+                    @Html.DisplayNameFor(model => model.PublishingYear)
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PublisherName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Authors)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PadgesCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublishingYear)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublisherName)
+                </td>
+                <td>
+                    @if (item.Image != null)
+                    {@Html.Raw("<img style='width:80px; height:60px;' src=\"data:image/jpeg;base64,"
+                                    + Convert.ToBase64String(item.Image) + "\" />")
+                }
+                </td>
+                <td>
+                    <ul>
+                        @foreach (Author author in item.Authors)
+                        {
+                            <li>@author.Name @author.Surname</li>
+                        }
+                    </ul>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

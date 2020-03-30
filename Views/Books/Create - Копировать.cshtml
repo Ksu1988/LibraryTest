@@ -1,0 +1,63 @@
+﻿@model MyLibrary.Models.Book
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Book</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PadgesCount" class="control-label"></label>
+                <input asp-for="PadgesCount" class="form-control" />
+                <span asp-validation-for="PadgesCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PublishingYear" class="control-label"></label>
+                <input asp-for="PublishingYear" class="form-control" />
+                <span asp-validation-for="PublishingYear" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PublisherName" class="control-label"></label>
+                <input asp-for="PublisherName" class="form-control" />
+                <span asp-validation-for="PublisherName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input name="formFile" type="file" class="form-control" />
+                @if (Model.Image != null)
+                {
+                    <img style='width:80px; height:60px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.Image))" />
+                }
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @Html.DisplayFor(model=>model.Authors)
+                <label asp-for="Authors" class="control-label"></label>
+                <a asp-action="CreateAuthor" asp-route-id="@null">Добавить автора</a>
+                <span asp-validation-for="Authors" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
